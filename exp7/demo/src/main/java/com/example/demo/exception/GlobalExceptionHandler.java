@@ -1,0 +1,20 @@
+package com.example.demo.exception;
+
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import java.util.*;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String,String> handle(MethodArgumentNotValidException ex){
+
+        Map<String,String> errors = new HashMap<>();
+
+        ex.getBindingResult().getFieldErrors()
+        .forEach(e -> errors.put(e.getField(), e.getDefaultMessage()));
+
+        return errors;
+    }
+}
